@@ -1,0 +1,66 @@
+esp8266:
+  board: esp01_1m
+  framework:
+    version: recommended
+
+wifi:
+  networks:
+    - ssid: "chaosdorf iot"
+      password: !secret wifi_psk
+
+  ap:
+    ssid: "esphome/virulean"
+    password: !secret wifi_psk
+
+
+esphome:
+  name: "virulean"
+  on_boot:
+    then:
+      - light.turn_on:
+          id: strip
+          red: 1.0
+          green: 1.0
+          blue: 1.0
+          effect: "None"
+          brightness: 30%
+
+# Enable the native API
+# https://esphome.io/components/api.html
+api:
+
+logger:
+  level: DEBUG
+  logs:
+    light: INFO
+    sensor: INFO
+
+# Enable HTTP frontend
+web_server:
+  port: 80
+
+# Allow over-the-air updates
+# https://esphome.io/components/ota.html
+ota:
+
+# Example configuration entry
+light:
+  - platform: rgb
+    id: strip
+    name: "Hackcenter LED Strip Kabelkanal"
+    red: output_component1
+    green: output_component2
+    blue: output_component3
+
+# Example output entry
+output:
+  - platform: esp8266_pwm
+    id: output_component1
+    pin: GPIO5
+  - platform: esp8266_pwm
+    id: output_component2
+    pin: GPIO12
+  - platform: esp8266_pwm
+    id: output_component3
+    pin: GPIO13
+  # Repeat for green and blue output
